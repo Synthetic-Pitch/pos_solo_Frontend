@@ -1,0 +1,25 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/login",
+      "destination": "https://dttipkowrzwemqpnksuf.supabase.co/functions/v1/login_v2"
+    },
+    {
+      "source": "/api/reconciliation",
+      "destination": "https://dttipkowrzwemqpnksuf.supabase.co/functions/v1/reconciliation"
+    },
+    {
+      "source": "/api/content-verification",
+      "destination": "https://dttipkowrzwemqpnksuf.supabase.co/functions/v1/content_verification"
+    },
+    {
+      "source": "/api/content-verification-order",
+      "destination": "https://dttipkowrzwemqpnksuf.supabase.co/functions/v1/content_verification_order"
+    },
+    {
+      "source": "/api/add-order",
+      "destination": "https://dttipkowrzwemqpnksuf.supabase.co/functions/v1/add_order"
+    },
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
+}

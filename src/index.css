@@ -1,0 +1,28 @@
+@import "tailwindcss";
+
+@theme {
+  --font-poppins: "Poppins", ui-sans-serif, system-ui, sans-serif;
+  --font-roboto: "Roboto", ui-sans-serif, system-ui, sans-serif;
+  --font-roboto-mono: "Roboto Mono", ui-monospace, monospace;
+  --font-azeret-mono: "Azeret Mono", ui-monospace, monospace;
+  --font-geist-mono: "Geist Mono", ui-monospace, monospace;
+  --font-iosevka-charon-mono: "Iosevka Charon Mono", ui-monospace, monospace;
+  --font-xanh-mono: "Xanh Mono", ui-monospace, monospace;
+  --font-monoton: "Monoton", cursive;
+  --font-noto-sans-khudawadi: "Noto Sans Khudawadi", sans-serif;
+  --font-playwrite-vn: "Playwrite VN", cursive;
+
+  --font-sans: var(--font-poppins);
+}
+
+html,
+body {
+  margin: 0;
+  box-sizing: border-box;
+  padding: 0;
+}
+
+@utility box_shadow {
+  border-radius: 1rem;
+  box-shadow: 10px 0.2rem 1rem rgba(0, 0, 0, .2);
+}
