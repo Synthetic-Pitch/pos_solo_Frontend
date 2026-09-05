@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { Navigate, useLocation } from 'react-router-dom'
+import { Navigate, useLocation, useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
 import inventoryIcon from '../assets/icon/inventory_icon.png'
 import { useLoginStore } from '../stores/use-login-store'
@@ -60,7 +60,7 @@ const Order = () => {
   const fromSuccessfulLogin = Boolean(
     (location.state as { fromSuccessfulLogin?: boolean } | null)?.fromSuccessfulLogin,
   )
-
+  const navigate = useNavigate();
   const contentVerificationQuery = useQuery({
     queryKey: ['content-verification-order', 'order'],
     queryFn: verifyOrderAccess,
@@ -122,7 +122,7 @@ const Order = () => {
     <div className="min-h-dvh px-6 font-poppins !select-none">
       <header className="mx-auto flex w-full max-w-200 justify-between items-center py-3">
         <button type="button" onClick={() => setGcashPayment(!gcash)} className={`h-12 rounded-4xl px-8 text-2xl text-white outline-0 ${gcash ? 'bg-[#0a81ff]' : 'bg-[#b6b6b6]'}`}>gcash</button>
-        <img src={inventoryIcon} alt="Inventory" className="h-16" />
+        <img src={inventoryIcon} alt="Inventory" className="h-16" onClick={()=>navigate("/overall")} />
       </header>
       {storeDefaults && (
         <section className="mx-auto w-full max-w-200 rounded-2xl" aria-labelledby="store-defaults-title">
