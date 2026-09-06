@@ -5,6 +5,7 @@ import { toast } from 'sonner'
 import inventoryIcon from '../assets/icon/inventory_icon.png'
 import { useLoginStore } from '../stores/use-login-store'
 import { useOrderStore } from '../stores/use-order-store'
+import { useSalesCountStore } from '../stores/use-sales-count-store'
 import { submitOrders, verifyOrderAccess } from '../utils/order'
 import fries from "../assets/image/fries.png"
 import {Plus,Minus} from "lucide-react"
@@ -56,6 +57,7 @@ const Order = () => {
   const addOrder = useOrderStore((state) => state.addOrder)
   const removeOrder = useOrderStore((state) => state.removeOrder)
   const clearOrders = useOrderStore((state) => state.clearOrders)
+  const setSalesCount = useSalesCountStore((state) => state.setSalesCount)
   const storeDefaults = loginResponse?.stores_default
   const fromSuccessfulLogin = Boolean(
     (location.state as { fromSuccessfulLogin?: boolean } | null)?.fromSuccessfulLogin,
@@ -72,7 +74,8 @@ const Order = () => {
 
   const checkoutMutation = useMutation({
     mutationFn: submitOrders,
-    onSuccess: () => {
+    onSuccess: (response) => {
+      setSalesCount(response.sales_count)
       clearOrders()
       toast.success('Order submitted successfully.')
     },

@@ -3,6 +3,7 @@ import LandingPage from './page/LandingPage'
 import ReconciliationPage from './page/ReconciliationPage'
 import Order from './page/Order';
 import Overview from './page/Overview';
+import VerifySummarize from './page/VerifySummarize';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Route path="/order" element={<Order />} />
         <Route path="/roder" element={<Navigate to="/order" replace />} />
         <Route path="/overall" element={<Overview/>}/>
+        <Route path="/verify-summarize" element={<VerifySummarize/>}/>
       </Routes>
     </BrowserRouter>
   )

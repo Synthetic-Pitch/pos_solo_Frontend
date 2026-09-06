@@ -20,6 +20,18 @@
       "source": "/api/add-order",
       "destination": "https://dttipkowrzwemqpnksuf.supabase.co/functions/v1/add_order"
     },
+    {
+      "source": "/api/add-potato",
+      "destination": "https://dttipkowrzwemqpnksuf.supabase.co/functions/v1/add_potato"
+    },
+    {
+      "source": "/api/add-cup",
+      "destination": "https://dttipkowrzwemqpnksuf.supabase.co/functions/v1/add_cup"
+    },
+    {
+      "source": "/api/summarize",
+      "destination": "https://dttipkowrzwemqpnksuf.supabase.co/functions/v1/summarize"
+    },
     { "source": "/(.*)", "destination": "/index.html" }
   ]
 }
