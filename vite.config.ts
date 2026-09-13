@@ -10,9 +10,6 @@ export default defineConfig(({ mode }) => {
   const contentVerificationUrl = new URL('https://dttipkowrzwemqpnksuf.supabase.co/functions/v1/content_verification')
   const orderVerificationUrl = new URL('https://dttipkowrzwemqpnksuf.supabase.co/functions/v1/content_verification_order')
   const addOrderUrl = new URL('https://dttipkowrzwemqpnksuf.supabase.co/functions/v1/add_order')
-  const addPotatoUrl = new URL('https://dttipkowrzwemqpnksuf.supabase.co/functions/v1/add_potato')
-  const addCupUrl = new URL('https://dttipkowrzwemqpnksuf.supabase.co/functions/v1/add_cup')
-  const summarizeUrl = new URL('https://dttipkowrzwemqpnksuf.supabase.co/functions/v1/summarize')
 
   return {
     plugins: [react(), tailwindcss()],
@@ -49,24 +46,6 @@ export default defineConfig(({ mode }) => {
           target: addOrderUrl.origin,
           changeOrigin: true,
           rewrite: () => `${addOrderUrl.pathname}${addOrderUrl.search}`,
-          cookieDomainRewrite: '',
-        },
-        '/api/add-potato': {
-          target: addPotatoUrl.origin,
-          changeOrigin: true,
-          rewrite: () => `${addPotatoUrl.pathname}${addPotatoUrl.search}`,
-          cookieDomainRewrite: '',
-        },
-        '/api/add-cup': {
-          target: addCupUrl.origin,
-          changeOrigin: true,
-          rewrite: () => `${addCupUrl.pathname}${addCupUrl.search}`,
-          cookieDomainRewrite: '',
-        },
-        '/api/summarize': {
-          target: summarizeUrl.origin,
-          changeOrigin: true,
-          rewrite: () => `${summarizeUrl.pathname}${summarizeUrl.search}`,
           cookieDomainRewrite: '',
         },
       },

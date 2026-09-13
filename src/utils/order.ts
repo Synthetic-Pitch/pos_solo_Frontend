@@ -29,18 +29,7 @@ const checkoutInputSchema = z.object({
 
 const errorResponseSchema = z.object({ message: z.string() })
 
-const checkoutResponseSchema = z.object({
-  message: z.string(),
-  inserted: z.array(z.number()),
-  sales_count: z.object({
-    small: z.number(),
-    medium: z.number(),
-    large: z.number(),
-  }),
-})
-
 export type CheckoutOrder = z.infer<typeof checkoutOrderSchema>
-export type CheckoutResponse = z.infer<typeof checkoutResponseSchema>
 
 /** Checks whether the current session may access the order page. */
 export async function verifyOrderAccess(): Promise<OrderAccessVerification> {
@@ -81,7 +70,7 @@ export async function verifyOrderAccess(): Promise<OrderAccessVerification> {
 }
 
 /** Submits the cashier's current order list without exposing the session cookie. */
-export async function submitOrders(orders: CheckoutOrder[]): Promise<CheckoutResponse> {
+export async function submitOrders(orders: CheckoutOrder[]): Promise<void> {
   const input = checkoutInputSchema.parse({ orders })
 
   if (!publishableKey) {
@@ -109,13 +98,4 @@ export async function submitOrders(orders: CheckoutOrder[]): Promise<CheckoutRes
     const apiError = errorResponseSchema.safeParse(responseBody)
     throw new Error(apiError.success ? apiError.data.message : `Checkout failed (${response.status}).`)
   }
-
-  const responseBody: unknown = await response.json().catch(() => null)
-  const result = checkoutResponseSchema.safeParse(responseBody)
-
-  if (!result.success) {
-    throw new Error('Checkout succeeded, but the server returned an invalid response.')
-  }
-
-  return result.data
 }
