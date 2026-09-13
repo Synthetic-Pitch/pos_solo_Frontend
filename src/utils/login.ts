@@ -72,7 +72,15 @@ export async function login(input: LoginInput): Promise<LoginResponse> {
     throw new Error(apiError.success ? apiError.data.message : `Login failed (${response.status}).`)
   }
 
-  const loginResponse = loginResponseSchema.parse(body)
+  const parsedLoginResponse = loginResponseSchema.safeParse(body)
+
+  if (!parsedLoginResponse.success) {
+    throw new Error(
+      'This branch has no store defaults configured. Please ask an administrator to set up the branch.'
+    )
+  }
+
+  const loginResponse = parsedLoginResponse.data
 
   if (import.meta.env.DEV) {
     console.log('Validated login response:', loginResponse)

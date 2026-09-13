@@ -142,7 +142,7 @@ const Order = () => {
                       <div className="relative w-1/2 flex items-center justify-center">
                         <img src={fries} alt=""
                         className={
-                          `${item.size === "small" && "h-25"} ${item.size === "medium" && "h-30"} ${item.size === "large" && "h-35"}`
+                          `${item.size === "Small" && "h-25"} ${item.size === "Medium" && "h-30"} ${item.size === "Large" && "h-35"}`
                           }/>
                       </div>
                       <section className="w-1/2 flex font-poppins text-5xl items-center gap-4 font-semibold">
