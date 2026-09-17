@@ -3,6 +3,7 @@ import LandingPage from './page/LandingPage'
 import ReconciliationPage from './page/ReconciliationPage'
 import Order from './page/Order';
 import Overview from './page/Overview';
+import Revenue from './page/Revenue';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Route path="/order" element={<Order />} />
         <Route path="/roder" element={<Navigate to="/order" replace />} />
         <Route path="/overall" element={<Overview/>}/>
+        <Route path="/revenue" element={<Revenue/>}/>
       </Routes>
     </BrowserRouter>
   )

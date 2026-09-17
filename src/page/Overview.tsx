@@ -52,6 +52,7 @@ const Overview = () => {
     onSuccess: (response) => {
       setSummaryReceipt(response.receipt)
       setIsSummaryModalOpen(false)
+      navigate('/revenue')
     },
     onError: (error) => toast.error(error.message || 'Unable to submit the summary.'),
   })
