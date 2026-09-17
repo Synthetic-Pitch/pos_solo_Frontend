@@ -19,8 +19,53 @@ export type SummaryInput = z.infer<typeof summaryInputSchema>
 
 const errorResponseSchema = z.object({ message: z.string() })
 
+const inventoryCountSchema = z.number().finite().min(0).max(1_000_000)
+
+const inventoryLeftSchema = z.object({
+  small_cups: cupCountSchema,
+  medium_cups: cupCountSchema,
+  large_cups: cupCountSchema,
+  potatoes: inventoryCountSchema,
+})
+
+const inventoryMovementSchema = z.object({
+  opening: inventoryCountSchema,
+  added: inventoryCountSchema,
+  sold: inventoryCountSchema,
+})
+
+const paymentSchema = z.object({
+  small_fries: cupCountSchema,
+  medium_fries: cupCountSchema,
+  large_fries: cupCountSchema,
+  total_sales: cupCountSchema,
+  earned: inventoryCountSchema,
+})
+
+/** The summary fields retained for use by other client components. */
+export const summaryReceiptSchema = z.object({
+  inventory_left: inventoryLeftSchema,
+  inventory_movement: z.object({
+    small_cups: inventoryMovementSchema,
+    medium_cups: inventoryMovementSchema,
+    large_cups: inventoryMovementSchema,
+    potatoes: inventoryMovementSchema,
+  }),
+  payments: z.record(z.string(), paymentSchema),
+  total_revenue: inventoryCountSchema,
+  total_sales: cupCountSchema,
+})
+
+export const summaryResponseSchema = z.object({
+  message: z.string(),
+  receipt: summaryReceiptSchema,
+})
+
+export type SummaryReceipt = z.infer<typeof summaryReceiptSchema>
+export type SummaryResponse = z.infer<typeof summaryResponseSchema>
+
 /** Sends the cashier's closing inventory to the summary function. */
-export async function submitSummary(input: SummaryInput): Promise<unknown> {
+export async function submitSummary(input: SummaryInput): Promise<SummaryResponse> {
   const validatedInput = summaryInputSchema.parse(input)
 
   if (!publishableKey) {
@@ -54,5 +99,5 @@ export async function submitSummary(input: SummaryInput): Promise<unknown> {
     throw new Error(apiError.success ? apiError.data.message : `Summary failed (${response.status}).`)
   }
 
-  return responseBody
+  return summaryResponseSchema.parse(responseBody)
 }

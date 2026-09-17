@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
 import { useBranchStore } from '../stores/use-branch-store'
 import { useLoginStore } from '../stores/use-login-store'
+import { useSummaryStore } from '../stores/use-summary-store'
 import { login, loginInputSchema } from '../utils/login'
 
 function LandingPage() {
@@ -13,6 +14,7 @@ function LandingPage() {
   const increment = useBranchStore((state) => state.increment)
   const decrement = useBranchStore((state) => state.decrement)
   const setLoginResponse = useLoginStore((state) => state.setLoginResponse)
+  const clearSummaryReceipt = useSummaryStore((state) => state.clearReceipt)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({})
@@ -21,6 +23,8 @@ function LandingPage() {
     mutationFn: login,
     onSuccess: (loginResponse) => {
       setLoginResponse(loginResponse)
+      // A receipt belongs to the prior browser session, not the next login.
+      clearSummaryReceipt()
       setPassword('')
       toast.success('Login success')
       navigate(loginResponse.isReturning ? '/order' : '/reconciliation', {

@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import type { FormEvent } from "react";
 import { toast } from "sonner";
 import { useOrderStore } from "../stores/use-order-store";
+import { useSummaryStore } from "../stores/use-summary-store";
 import { addCups } from "../utils/cup";
 import { addPotatoes } from "../utils/potato";
 import { submitSummary } from "../utils/summary";
@@ -11,6 +12,7 @@ import { submitSummary } from "../utils/summary";
 const Overview = () => {
   const navigate = useNavigate();
   const salesCount = useOrderStore((state) => state.salesCount)
+  const setSummaryReceipt = useSummaryStore((state) => state.setReceipt)
   const [isPotatoModalOpen, setIsPotatoModalOpen] = useState(false)
   const [isCupModalOpen, setIsCupModalOpen] = useState(false)
   const [isSummaryModalOpen, setIsSummaryModalOpen] = useState(false)
@@ -48,9 +50,7 @@ const Overview = () => {
   const summarizeMutation = useMutation({
     mutationFn: submitSummary,
     onSuccess: (response) => {
-      // Intentionally logs only the server response—not credentials—for the
-      // requested Summarize-button behavior.
-      console.log('Summary response:', response)
+      setSummaryReceipt(response.receipt)
       setIsSummaryModalOpen(false)
     },
     onError: (error) => toast.error(error.message || 'Unable to submit the summary.'),
