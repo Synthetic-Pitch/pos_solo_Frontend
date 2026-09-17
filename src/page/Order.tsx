@@ -56,6 +56,7 @@ const Order = () => {
   const addOrder = useOrderStore((state) => state.addOrder)
   const removeOrder = useOrderStore((state) => state.removeOrder)
   const clearOrders = useOrderStore((state) => state.clearOrders)
+  const setSalesCount = useOrderStore((state) => state.setSalesCount)
   const storeDefaults = loginResponse?.stores_default
   const fromSuccessfulLogin = Boolean(
     (location.state as { fromSuccessfulLogin?: boolean } | null)?.fromSuccessfulLogin,
@@ -72,7 +73,8 @@ const Order = () => {
 
   const checkoutMutation = useMutation({
     mutationFn: submitOrders,
-    onSuccess: () => {
+    onSuccess: (response) => {
+      setSalesCount(response.sales_count)
       clearOrders()
       toast.success('Order submitted successfully.')
     },

@@ -29,7 +29,21 @@ const checkoutInputSchema = z.object({
 
 const errorResponseSchema = z.object({ message: z.string() })
 
+const salesCountSchema = z.object({
+  small: z.number().int().nonnegative(),
+  medium: z.number().int().nonnegative(),
+  large: z.number().int().nonnegative(),
+})
+
+const submitOrdersResponseSchema = z.object({
+  message: z.string(),
+  inserted: z.array(z.unknown()),
+  sales_count: salesCountSchema,
+})
+
 export type CheckoutOrder = z.infer<typeof checkoutOrderSchema>
+export type SalesCount = z.infer<typeof salesCountSchema>
+export type SubmitOrdersResponse = z.infer<typeof submitOrdersResponseSchema>
 
 /** Checks whether the current session may access the order page. */
 export async function verifyOrderAccess(): Promise<OrderAccessVerification> {
@@ -70,7 +84,7 @@ export async function verifyOrderAccess(): Promise<OrderAccessVerification> {
 }
 
 /** Submits the cashier's current order list without exposing the session cookie. */
-export async function submitOrders(orders: CheckoutOrder[]): Promise<void> {
+export async function submitOrders(orders: CheckoutOrder[]): Promise<SubmitOrdersResponse> {
   const input = checkoutInputSchema.parse({ orders })
 
   if (!publishableKey) {
@@ -93,9 +107,25 @@ export async function submitOrders(orders: CheckoutOrder[]): Promise<void> {
     body: JSON.stringify(input),
   })
 
+  const responseBody: unknown = await response.json().catch(() => null)
+
+  if (import.meta.env.DEV) {
+    console.log('Order submission response:', {
+      status: response.status,
+      ok: response.ok,
+      body: responseBody,
+    })
+  }
+
   if (!response.ok) {
-    const responseBody: unknown = await response.json().catch(() => null)
     const apiError = errorResponseSchema.safeParse(responseBody)
     throw new Error(apiError.success ? apiError.data.message : `Checkout failed (${response.status}).`)
   }
+
+  const parsedResponse = submitOrdersResponseSchema.safeParse(responseBody)
+  if (!parsedResponse.success) {
+    throw new Error('Checkout succeeded, but the server returned an invalid response.')
+  }
+
+  return parsedResponse.data
 }
