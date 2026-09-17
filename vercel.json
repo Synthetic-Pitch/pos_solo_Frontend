@@ -28,6 +28,10 @@
       "source": "/api/add-cup",
       "destination": "https://dttipkowrzwemqpnksuf.supabase.co/functions/v1/add_cup"
     },
+    {
+      "source": "/api/summarize",
+      "destination": "https://dttipkowrzwemqpnksuf.supabase.co/functions/v1/summarize"
+    },
     { "source": "/(.*)", "destination": "/index.html" }
   ]
 }
