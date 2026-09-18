@@ -18,7 +18,7 @@ const Revenue = () => {
       </main>
     )
   }
-
+  
   return (
     <main className="min-h-screen bg-[#fffaf7] p-6 font-poppins sm:p-8">
       <section className="mx-auto max-w-5xl">
