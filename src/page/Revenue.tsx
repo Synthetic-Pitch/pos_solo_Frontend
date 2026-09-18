@@ -4,7 +4,7 @@ import { useMutation, useQuery } from '@tanstack/react-query'
 import { Navigate, useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
 import { useSummaryStore } from '../stores/use-summary-store'
-import { archiveSession, resetPersistedClientState, verifyRevenueAccess } from '../utils/revenue'
+import { archiveSession, verifyRevenueAccess } from '../utils/revenue'
 
 const formatNumber = (value: number) => new Intl.NumberFormat().format(value)
 const formatCurrency = (value: number) =>
@@ -42,8 +42,7 @@ const Revenue = () => {
     mutationFn: archiveSession,
     onSuccess: (response) => {
       toast.success(response.message || 'Archived successfully.')
-      navigate('/', { replace: true })
-      resetPersistedClientState()
+      navigate('/shiftend', { replace: true })
     },
     onError: (error) => {
       toast.error(error.message || 'Unable to archive.')
@@ -57,6 +56,10 @@ const Revenue = () => {
       toast.error('Unable to verify your session. Please sign in again.')
     }
   }, [contentVerificationQuery.data, contentVerificationQuery.isError, contentVerificationQuery.isSuccess])
+
+  if (archiveMutation.isSuccess) {
+    return null
+  }
 
   if (contentVerificationQuery.isLoading) {
     return <RevenueLoadingSkeleton />

@@ -4,6 +4,7 @@ import ReconciliationPage from './page/ReconciliationPage'
 import Order from './page/Order';
 import Overview from './page/Overview';
 import Revenue from './page/Revenue';
+import ShiftEnd from './page/ShiftEnd';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path="/roder" element={<Navigate to="/order" replace />} />
         <Route path="/overall" element={<Overview/>}/>
         <Route path="/revenue" element={<Revenue/>}/>
+        <Route path="/shiftend" element={<ShiftEnd/>}/>
       </Routes>
     </BrowserRouter>
   )
