@@ -1,13 +1,58 @@
 
+import { useEffect } from 'react'
+import { useQuery } from '@tanstack/react-query'
+import { Navigate } from 'react-router-dom'
+import { toast } from 'sonner'
 import { useSummaryStore } from '../stores/use-summary-store'
+import { verifyRevenueAccess } from '../utils/revenue'
 
 const formatNumber = (value: number) => new Intl.NumberFormat().format(value)
 const formatCurrency = (value: number) =>
   new Intl.NumberFormat('en-PH', { style: 'currency', currency: 'PHP' }).format(value)
 
+function RevenueLoadingSkeleton() {
+  return (
+    <main className="min-h-screen bg-[#fffaf7] p-6 font-poppins sm:p-8" aria-busy="true" aria-label="Verifying revenue access">
+      <section className="mx-auto max-w-5xl animate-pulse" aria-hidden="true">
+        <div className="h-10 w-72 rounded bg-gray-200" />
+        <div className="mt-6 grid gap-4 sm:grid-cols-2">
+          <div className="h-32 rounded-2xl bg-gray-200" />
+          <div className="h-32 rounded-2xl bg-gray-200" />
+        </div>
+        <div className="mt-6 h-64 rounded-2xl bg-gray-200" />
+        <div className="mt-6 h-40 rounded-2xl bg-gray-200" />
+      </section>
+    </main>
+  )
+}
+
 const Revenue = () => {
-  const receipt = useSummaryStore((state) => state.receipt);
-  
+  const receipt = useSummaryStore((state) => state.receipt)
+  const contentVerificationQuery = useQuery({
+    queryKey: ['content-verification-revenue', 'revenue'],
+    queryFn: verifyRevenueAccess,
+    retry: false,
+    staleTime: 0,
+    gcTime: 0,
+    refetchOnMount: 'always',
+  })
+
+  useEffect(() => {
+    if (contentVerificationQuery.isSuccess && !contentVerificationQuery.data.valid) {
+      toast.error(contentVerificationQuery.data.message)
+    } else if (contentVerificationQuery.isError) {
+      toast.error('Unable to verify your session. Please sign in again.')
+    }
+  }, [contentVerificationQuery.data, contentVerificationQuery.isError, contentVerificationQuery.isSuccess])
+
+  if (contentVerificationQuery.isLoading) {
+    return <RevenueLoadingSkeleton />
+  }
+
+  if (contentVerificationQuery.isError || contentVerificationQuery.data?.valid !== true) {
+    return <Navigate to="/" replace />
+  }
+
   if (!receipt) {
     return (
       <main className="min-h-screen bg-[#fffaf7] p-8 font-poppins">

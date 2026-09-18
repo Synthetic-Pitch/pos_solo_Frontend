@@ -17,6 +17,10 @@
       "destination": "https://dttipkowrzwemqpnksuf.supabase.co/functions/v1/content_verification_order"
     },
     {
+      "source": "/api/content-verification-revenue",
+      "destination": "https://dttipkowrzwemqpnksuf.supabase.co/functions/v1/content_verification_revenue"
+    },
+    {
       "source": "/api/add-order",
       "destination": "https://dttipkowrzwemqpnksuf.supabase.co/functions/v1/add_order"
     },

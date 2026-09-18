@@ -133,7 +133,7 @@ const Order = () => {
               storeDefaults.sizes_price.map((item, index) => {
                 const selectedFlavor = selectedFlavorBySize[item.size]
                 const sizeOrderCount = orders.filter((order) => order.size === item.size).length
-
+                
                 return (
                   <li key={index} className=" mt-2">
                     <div className="relative flex justify-center items-center pt-6">

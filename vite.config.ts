@@ -9,6 +9,7 @@ export default defineConfig(({ mode }) => {
   const reconciliationUrl = new URL('https://dttipkowrzwemqpnksuf.supabase.co/functions/v1/reconciliation')
   const contentVerificationUrl = new URL('https://dttipkowrzwemqpnksuf.supabase.co/functions/v1/content_verification')
   const orderVerificationUrl = new URL('https://dttipkowrzwemqpnksuf.supabase.co/functions/v1/content_verification_order')
+  const revenueVerificationUrl = new URL('https://dttipkowrzwemqpnksuf.supabase.co/functions/v1/content_verification_revenue')
   const addOrderUrl = new URL('https://dttipkowrzwemqpnksuf.supabase.co/functions/v1/add_order')
   const addPotatoUrl = new URL('https://dttipkowrzwemqpnksuf.supabase.co/functions/v1/add_potato')
   const addCupUrl = new URL('https://dttipkowrzwemqpnksuf.supabase.co/functions/v1/add_cup')
@@ -37,6 +38,12 @@ export default defineConfig(({ mode }) => {
           target: orderVerificationUrl.origin,
           changeOrigin: true,
           rewrite: () => `${orderVerificationUrl.pathname}${orderVerificationUrl.search}`,
+          cookieDomainRewrite: '',
+        },
+        '/api/content-verification-revenue': {
+          target: revenueVerificationUrl.origin,
+          changeOrigin: true,
+          rewrite: () => `${revenueVerificationUrl.pathname}${revenueVerificationUrl.search}`,
           cookieDomainRewrite: '',
         },
         '/api/content-verification': {
