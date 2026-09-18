@@ -14,6 +14,7 @@ export default defineConfig(({ mode }) => {
   const addPotatoUrl = new URL('https://dttipkowrzwemqpnksuf.supabase.co/functions/v1/add_potato')
   const addCupUrl = new URL('https://dttipkowrzwemqpnksuf.supabase.co/functions/v1/add_cup')
   const summarizeUrl = new URL('https://dttipkowrzwemqpnksuf.supabase.co/functions/v1/summarize')
+  const archiveUrl = new URL('https://dttipkowrzwemqpnksuf.supabase.co/functions/v1/archieve')
 
   return {
     plugins: [react(), tailwindcss()],
@@ -74,6 +75,12 @@ export default defineConfig(({ mode }) => {
           target: summarizeUrl.origin,
           changeOrigin: true,
           rewrite: () => `${summarizeUrl.pathname}${summarizeUrl.search}`,
+          cookieDomainRewrite: '',
+        },
+        '/api/archive': {
+          target: archiveUrl.origin,
+          changeOrigin: true,
+          rewrite: () => `${archiveUrl.pathname}${archiveUrl.search}`,
           cookieDomainRewrite: '',
         },
       },

@@ -36,6 +36,10 @@
       "source": "/api/summarize",
       "destination": "https://dttipkowrzwemqpnksuf.supabase.co/functions/v1/summarize"
     },
+    {
+      "source": "/api/archive",
+      "destination": "https://dttipkowrzwemqpnksuf.supabase.co/functions/v1/archieve"
+    },
     { "source": "/(.*)", "destination": "/index.html" }
   ]
 }

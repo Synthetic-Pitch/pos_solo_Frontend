@@ -1,10 +1,10 @@
 
 import { useEffect } from 'react'
-import { useQuery } from '@tanstack/react-query'
-import { Navigate } from 'react-router-dom'
+import { useMutation, useQuery } from '@tanstack/react-query'
+import { Navigate, useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
 import { useSummaryStore } from '../stores/use-summary-store'
-import { verifyRevenueAccess } from '../utils/revenue'
+import { archiveSession, resetPersistedClientState, verifyRevenueAccess } from '../utils/revenue'
 
 const formatNumber = (value: number) => new Intl.NumberFormat().format(value)
 const formatCurrency = (value: number) =>
@@ -27,6 +27,7 @@ function RevenueLoadingSkeleton() {
 }
 
 const Revenue = () => {
+  const navigate = useNavigate()
   const receipt = useSummaryStore((state) => state.receipt)
   const contentVerificationQuery = useQuery({
     queryKey: ['content-verification-revenue', 'revenue'],
@@ -35,6 +36,18 @@ const Revenue = () => {
     staleTime: 0,
     gcTime: 0,
     refetchOnMount: 'always',
+  })
+
+  const archiveMutation = useMutation({
+    mutationFn: archiveSession,
+    onSuccess: (response) => {
+      toast.success(response.message || 'Archived successfully.')
+      navigate('/', { replace: true })
+      resetPersistedClientState()
+    },
+    onError: (error) => {
+      toast.error(error.message || 'Unable to archive.')
+    },
   })
 
   useEffect(() => {
@@ -122,8 +135,13 @@ const Revenue = () => {
         </section>
 
         <div className="mt-10 flex justify-center pb-6">
-          <button type="button" className="rounded-full bg-[#fe7e32] px-12 py-4 text-xl font-semibold text-white shadow-sm transition hover:bg-[#e66d28]">
-            Archive
+          <button
+            type="button"
+            onClick={() => archiveMutation.mutate()}
+            disabled={archiveMutation.isPending}
+            className="rounded-full bg-[#fe7e32] px-12 py-4 text-xl font-semibold text-white shadow-sm transition hover:bg-[#e66d28] disabled:cursor-not-allowed disabled:opacity-60"
+          >
+            {archiveMutation.isPending ? 'Archiving...' : 'Archive'}
           </button>
         </div>
       </section>
