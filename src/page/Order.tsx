@@ -82,7 +82,7 @@ const Order = () => {
       toast.error(error.message || 'Unable to submit the order.')
     },
   })
-
+  
   useEffect(() => {
     if (contentVerificationQuery.isSuccess && !contentVerificationQuery.data.valid) {
       const needsReconciliation = requiresReconciliation(contentVerificationQuery.data.message)

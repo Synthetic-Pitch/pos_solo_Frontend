@@ -135,6 +135,37 @@ const Revenue = () => {
               </div>
             ))}
           </div>
+
+          <div className="mt-8 border-t border-gray-100 pt-6">
+            <h3 className="text-xl font-bold text-gray-800">Inventory movement</h3>
+            <p className="mt-1 text-sm text-gray-600">Opening stock, stock added, and stock used for this shift.</p>
+            <div className="mt-4 overflow-x-auto">
+              <table className="w-full min-w-[480px] text-left">
+                <thead className="border-b text-gray-500">
+                  <tr>
+                    <th className="pb-3 font-medium">Item</th>
+                    <th className="pb-3 text-right font-medium">Opening</th>
+                    <th className="pb-3 text-right font-medium">Added</th>
+                    <th className="pb-3 text-right font-medium">Sold</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {Object.entries(receipt.inventory_movement).map(([item, movement]) => {
+                    const unit = item === 'potatoes' ? ' kg' : ''
+
+                    return (
+                      <tr key={item} className="border-b last:border-0">
+                        <td className="py-4 font-medium capitalize">{item.replace(/_/g, ' ')}</td>
+                        <td className="py-4 text-right">{formatNumber(movement.opening)}{unit}</td>
+                        <td className="py-4 text-right">{formatNumber(movement.added)}{unit}</td>
+                        <td className="py-4 text-right">{formatNumber(movement.sold)}{unit}</td>
+                      </tr>
+                    )
+                  })}
+                </tbody>
+              </table>
+            </div>
+          </div>
         </section>
 
         <div className="mt-10 flex justify-center pb-6">

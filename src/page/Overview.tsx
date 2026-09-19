@@ -35,7 +35,7 @@ const Overview = () => {
     },
     onError: (error) => toast.error(error.message || 'Unable to add potatoes.'),
   })
-
+  
   const addCupMutation = useMutation({
     mutationFn: addCups,
     onSuccess: () => {
